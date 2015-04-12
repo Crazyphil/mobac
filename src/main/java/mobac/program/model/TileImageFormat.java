@@ -24,6 +24,7 @@ import javax.swing.JComboBox;
 import mobac.gui.MainGUI;
 import mobac.program.interfaces.TileImageDataWriter;
 import mobac.program.tiledatawriter.TileImageJpegDataWriter;
+import mobac.program.tiledatawriter.TileImageJpegInverseDataWriter;
 import mobac.program.tiledatawriter.TileImagePng4DataWriter;
 import mobac.program.tiledatawriter.TileImagePng8DataWriter;
 import mobac.program.tiledatawriter.TileImagePngDataWriter;
@@ -66,7 +67,16 @@ public enum TileImageFormat {
 	JPEG80(new TileImageJpegDataWriter(0.80), "lp_tile_param_image_fmt_jpg_q80"), //
 	JPEG70(new TileImageJpegDataWriter(0.70), "lp_tile_param_image_fmt_jpg_q70"), //
 	JPEG60(new TileImageJpegDataWriter(0.60), "lp_tile_param_image_fmt_jpg_q60"), //
-	JPEG50(new TileImageJpegDataWriter(0.50), "lp_tile_param_image_fmt_jpg_q50"); //
+	JPEG50(new TileImageJpegDataWriter(0.50), "lp_tile_param_image_fmt_jpg_q50"), //
+	JPEG100Inv(new TileImageJpegInverseDataWriter(1.00), "lp_tile_param_image_fmt_jpg_inv_q100"), //
+	JPEG99Inv(new TileImageJpegInverseDataWriter(0.99), "lp_tile_param_image_fmt_jpg_inv_q99"), //
+	JPEG95Inv(new TileImageJpegInverseDataWriter(0.95), "lp_tile_param_image_fmt_jpg_inv_q95"), //
+	JPEG90Inv(new TileImageJpegInverseDataWriter(0.90), "lp_tile_param_image_fmt_jpg_inv_q90"), //
+	JPEG85Inv(new TileImageJpegInverseDataWriter(0.85), "lp_tile_param_image_fmt_jpg_inv_q85"), //
+	JPEG80Inv(new TileImageJpegInverseDataWriter(0.80), "lp_tile_param_image_fmt_jpg_inv_q80"), //
+	JPEG70Inv(new TileImageJpegInverseDataWriter(0.70), "lp_tile_param_image_fmt_jpg_inv_q70"), //
+	JPEG60Inv(new TileImageJpegInverseDataWriter(0.60), "lp_tile_param_image_fmt_jpg_inv_q60"), //
+	JPEG50Inv(new TileImageJpegInverseDataWriter(0.50), "lp_tile_param_image_fmt_jpg_inv_q50"); //
 
 	// private final String description;
 

@@ -19,7 +19,10 @@ package mobac.optional;
 import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.image.BufferedImage;
+import java.awt.image.renderable.ParameterBlock;
 
+import javax.media.jai.JAI;
+import javax.media.jai.RenderableOp;
 import javax.media.jai.RenderedOp;
 import javax.media.jai.operator.ColorQuantizerDescriptor;
 
@@ -52,5 +55,13 @@ public class JavaAdvancedImaging {
 				new Integer(colorCount), // Max number of colors
 				null, null, new Integer(1), Integer.valueOf(1), null);
 		return ro.getAsBufferedImage();
+	}
+
+	public static BufferedImage invert(BufferedImage image) {
+		ParameterBlock pb = new ParameterBlock();
+		pb.addSource(image);
+		
+		RenderedOp invertOp = JAI.create("invert", image);
+		return invertOp.getAsBufferedImage();
 	}
 }
