@@ -31,6 +31,7 @@ import mobac.program.atlascreators.AtlasCreator;
 import mobac.program.atlascreators.tileprovider.DownloadedTileProvider;
 import mobac.program.atlascreators.tileprovider.FilteredMapSourceProvider;
 import mobac.program.atlascreators.tileprovider.TileProvider;
+import mobac.program.atlascreators.tileprovider.TileStoreTileProvider;
 import mobac.program.download.DownloadJobProducerThread;
 import mobac.program.interfaces.AtlasInterface;
 import mobac.program.interfaces.DownloadJobListener;
@@ -43,6 +44,7 @@ import mobac.program.interfaces.MapSource.LoadMethod;
 import mobac.program.model.AtlasOutputFormat;
 import mobac.program.model.Settings;
 import mobac.program.tilestore.TileStore;
+import mobac.program.tilestore.berkeleydb.DelayedInterruptThread;
 import mobac.utilities.GUIExceptionHandler;
 import mobac.utilities.I18nUtils;
 import mobac.utilities.Utilities;
@@ -51,7 +53,7 @@ import mobac.utilities.tar.TarIndexedArchive;
 
 import org.apache.log4j.Logger;
 
-public class AtlasThread extends Thread implements DownloadJobListener, AtlasCreationController {
+public class AtlasThread extends DelayedInterruptThread implements DownloadJobListener, AtlasCreationController {
 
 	private static final Logger log = Logger.getLogger(AtlasThread.class);
 	private static int threadNum = 0;
@@ -281,12 +283,15 @@ public class AtlasThread extends Thread implements DownloadJobListener, AtlasCre
 				// For online maps we download the tiles first and then start creating the map if
 				// we are sure we got all tiles
 				if (!AtlasOutputFormat.TILESTORE.equals(atlas.getOutputFormat())) {
-					String tempSuffix = "MOBAC_" + atlas.getName() + "_" + zoom + "_";
-					File tileArchiveFile = File.createTempFile(tempSuffix, ".tar", DirectoryManager.tempDir);
-					// If something goes wrong the temp file only persists until the VM exits
-					tileArchiveFile.deleteOnExit();
-					log.debug("Writing downloaded tiles to " + tileArchiveFile.getPath());
-					tileArchive = new TarIndexedArchive(tileArchiveFile, tileCount);
+					if (!Settings.getInstance().tileStoreEnabled) {
+						String tempSuffix = "MOBAC_" + atlas.getName() + "_" + zoom + "_";
+						File tileArchiveFile = File.createTempFile(tempSuffix, ".tar", DirectoryManager.tempDir);
+						// If something goes wrong the temp file only persists until the VM exits
+						tileArchiveFile.deleteOnExit();
+						log.debug("Writing downloaded tiles to " + tileArchiveFile.getPath());
+						tileArchive = new TarIndexedArchive(tileArchiveFile, tileCount);
+					} else
+						log.debug("Directly using tile store instead of temporary TAR archive");
 				} else
 					log.debug("Downloading to tile store only");
 
@@ -346,7 +351,10 @@ public class AtlasThread extends Thread implements DownloadJobListener, AtlasCre
 				}
 				downloadJobDispatcher.cancelOutstandingJobs();
 				log.debug("Starting to create atlas from downloaded tiles");
-				mapTileProvider = new DownloadedTileProvider(tileIndex, map);
+				if (AtlasOutputFormat.TILESTORE.equals(atlas.getOutputFormat()) || !Settings.getInstance().tileStoreEnabled) {
+					mapTileProvider = new DownloadedTileProvider(tileIndex, map);
+				} else
+					mapTileProvider = new TileStoreTileProvider(map.getMapSource(), zoom);
 			} else {
 				// We don't need to download anything. Everything is already stored locally therefore we can just use it
 				mapTileProvider = new FilteredMapSourceProvider(map, LoadMethod.DEFAULT);
