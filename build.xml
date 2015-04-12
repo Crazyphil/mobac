@@ -37,7 +37,7 @@
 	</path>
 
 	<target name="all"
-		depends="clean_build,svnversion,build,build_mapsources,sign_mapsources,create_jar,shrink,create_release,create_release_src" />
+		depends="clean_build,build,build_mapsources,sign_mapsources,create_jar,shrink,create_release,create_release_src" />
 
 	<target name="update_mapsources" depends="build_mapsources,sign_mapsources" />
 
@@ -83,7 +83,7 @@
 		</copy>
 	</target>
 
-	<target name="build_mapsources" depends="clean_build,build,svnversion"
+	<target name="build_mapsources" depends="clean_build,build"
 		description="Build all map packs and generate the new mappacks-md5.txt">
 		<property name="mappack.srcbasedir" value="src/main/java/mobac/mapsources/mappacks" />
 		<property file="keys/keystore.properties" />
@@ -302,29 +302,6 @@
 			-dontobfuscate
 		</proguard>
 		<move file="build/temp.jar" tofile="${jar.name}" overwrite="true" />
-	</target>
-
-	<target name="svnversion"
-		description="Updates the revision information in src/mobac/mobac.properties"
-		depends="svnversion_svn">
-	</target>
-
-	<target name="svnversion_svn">
-		<delete file="${rev.prop.file}" />
-		<exec executable="svnversion" outputproperty="mobac.revision.new"
-			searchpath="true" failifexecutionfails="false" />
-		<property name="mobac.revision.new" value="exported" />
-		<condition property="mobac.revision.exported">
-			<equals arg1="${mobac.revision.new}" arg2="exported" />
-		</condition>
-		<echo message="MOBAC revision: ${mobac.revision.new}" />
-		<antcall target="svnversion_write_property_file" />
-	</target>
-
-	<target name="svnversion_write_property_file" unless="mobac.revision.exported">
-		<propertyfile file="${rev.prop.file}">
-			<entry key="mobac.revision" value="${mobac.revision.new}" />
-		</propertyfile>
 	</target>
 
 	<target name="create_release"
