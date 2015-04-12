@@ -17,8 +17,8 @@
 		<format property="build.date" pattern="yyyy-MM-dd HH:mm:ss" />
 	</tstamp>
 
-	<property name="je-version" value="3.3.93" />
-	<property name="sqlite-version" value="3.7.15-M1" />
+	<property name="je-version" value="6.2.31" />
+	<property name="sqlite-version" value="3.8.7" />
 	
 	<!-- Java target version -->
 	<property name="java-target" value="1.6" />

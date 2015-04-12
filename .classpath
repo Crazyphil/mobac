@@ -14,14 +14,14 @@
 	<classpathentry exported="true" kind="lib" path="lib/jai_codec.jar"/>
 	<classpathentry kind="lib" path="lib/Tidy.jar"/>
 	<classpathentry kind="lib" path="lib/simmetrics_jar_v1_6_2_d07_02_07.jar"/>
-	<classpathentry exported="true" kind="lib" path="lib/je-3.3.93.jar">
+	<classpathentry kind="lib" path="lib/je-6.2.31.jar"/>
 		<attributes>
-			<attribute name="javadoc_location" value="http://download.oracle.com/berkeley-db/docs/je/3.3.62/java/"/>
+			<attribute name="javadoc_location" value="https://docs.oracle.com/cd/E17277_02/html/java/"/>
 		</attributes>
 	</classpathentry>
 	<classpathentry kind="lib" path="lib/itextpdf-5.1.0.jar"/>
 	<classpathentry kind="lib" path="lib/commons-lang3-3.1.jar"/>
-	<classpathentry kind="lib" path="lib/sqlite-jdbc-3.7.15-M1.jar"/>
+	<classpathentry kind="lib" path="lib/sqlite-jdbc-3.8.7.jar"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.junit.JUNIT_CONTAINER/3"/>
 	<classpathentry kind="lib" path="lib/servlet.jar"/>
 	<classpathentry kind="lib" path="lib/webserver.jar"/>
